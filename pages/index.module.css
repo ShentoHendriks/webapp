@@ -16,16 +16,66 @@
 .main, */
 
 
+
+@import url('https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500;700&display=swap');
+
 /* Echte code hier */
-.vak {
+
+.main {
+ font-family: 'Fira Mono', monospace;
+}
+
+.firasans {
+  font-family: 'Fira Mono', monospace;
+  margin-top: 10px;
+  box-sizing: border-box;
+}
+
+.button {
+  font-family: 'Fira Mono', monospace;
+  margin-top: 20px;
+  width: 130px;
+  height: 35px;
+  font-size: 20px;
+  background: #bfbff3;
+  border: 1px black solid;
+  transition: all .10s;
+}
+.button:hover {
+  background-color: #7e7ebb;
+  transition: all .10s;
+}
+
+.margin-top {
+  margin-top: 10px;
+}
+
+.vakinput {
+  box-sizing: border-box;
+  padding: 10px;
   display: block;
-  width: 90vw;
+  width: 50vw;
+  height: 20vh;
+  margin: 30px auto;
+  font-family: 'Fira Mono', monospace;
+  font-size: 18px;
+  color: #383838;
+}
+
+.vakouput {
+  box-sizing: border-box;
+  padding: 10px;
+  display: block;
+  width: 50vw;
   height: 50vh;
   margin: 0 auto;
+  font-family: 'Fira Mono', monospace;
+  font-size: 18px;
+  color: #383838;
 }
 
 .wrapper {
-  width: 90vw;
+  width: 50vw;
   height: auto;
   margin: 20px auto;
 }

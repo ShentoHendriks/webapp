@@ -2,11 +2,14 @@ import Head from "next/head";
 import { useState } from "react";
 import styles from "./index.module.css";
 import { useRef } from 'react';
-// your code
+
 
 export default function Home() {
+  
   const ref = useRef(null);
   const author = useRef(null);
+  const output = useRef(null);
+
   var input_prompt = "";
 
   async function onSubmit(event) {
@@ -29,9 +32,9 @@ export default function Home() {
     function task(i) {
       setTimeout(function () {
         if (i == 0) {
-          ref.current.value = "";
+          output.current.value = "";
         }
-        ref.current.value += data.result.charAt(i)
+        output.current.value += data.result.charAt(i)
       }, 15 * i);
     }
   }
@@ -48,19 +51,18 @@ export default function Home() {
           <h1>Verbosity: Turn your prose into a published author.</h1>
           <h3>Developed and created by: Shento Hendriks</h3>
           <div>Choose your Author:</div>
-          <select ref={author}>
+          <select className={styles.firasans} ref={author}>
             <option value="Vladimir Nabokov">Vladimir Nabokov</option>
             <option value="Ernest Hemingway">Ernest Hemingway</option>
             <option value="F. Scott Fitzgerald">F. Scott Fitzgerald</option>
           </select>
           <form onSubmit={onSubmit}>
-            <input type="submit" value="Rewrite" />
+            <input className={styles.button} type="submit" value="Rewrite" />
           </form>
         </div>
 
-
-
-        <textarea className={styles.vak} ref={ref} placeholder="I want to describe..."></textarea>
+        <textarea className={styles.vakinput} ref={ref} placeholder="I want to describe..."></textarea>
+        <textarea className={styles.vakouput} placeholder="Rewritten Text..." ref={output}></textarea>
       </main>
     </div>
   );
