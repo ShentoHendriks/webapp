@@ -8,7 +8,7 @@ const openai = new OpenAIApi(configuration);
 export default async function (req, res) {
   const completion = await openai.createCompletion({
     model: "text-davinci-003",
-    prompt: generatePrompt(req.body.input),
+    prompt: generatePrompt(req.body.input), // data is received here and sent from index.js -> body: JSON.stringify({ input: input_prompt })
     temperature: 0.7,
     max_tokens: 556,
     top_p: 1,

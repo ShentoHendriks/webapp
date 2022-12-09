@@ -20,6 +20,7 @@ export default function Home() {
       headers: {
         "Content-Type": "application/json",
       },
+      /* Send the data to the generate.js */
       body: JSON.stringify({ input: input_prompt }),
     });
     const data = await response.json();
