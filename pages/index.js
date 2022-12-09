@@ -11,6 +11,7 @@ export default function Home() {
   const output = useRef(null);
   const detail = useRef(null);
   const maxwords = useRef(null);
+  const randomness = useRef(null);
 
   var input_prompt = "";
 
@@ -42,6 +43,11 @@ export default function Home() {
       number_for_prompt = parseInt(maxwords.current.value/0.75)
     }
 
+    var randomness_holder = 0.7; 
+    if (isNumeric(randomness.current.value) == true) {
+      randomness_holder = parseInt(randomness.current.value)
+    }
+
 
     const response = await fetch("/api/generate", {
       method: "POST",
@@ -52,6 +58,7 @@ export default function Home() {
       body: JSON.stringify({
         input: input_prompt,
         maxwordsCount: number_for_prompt,
+        randomness: randomness_holder,
       }),
     });
     const data = await response.json();
@@ -100,9 +107,11 @@ export default function Home() {
             <option value="Add as many detail as possible">Add as many detail as possible</option>
           </select>
 
-          <div className={styles.margintop}>Generate max word count:</div>
-
+          <div className={styles.margintop}>Generate max word count (1-1000) Default = 250:</div>
           <input type="text" className={styles.bigfont} ref={maxwords}></input>
+
+          <div className={styles.margintop}>Randomness (0-1) Default = 0.7:</div>
+          <input type="text" className={styles.bigfont} ref={randomness}></input>
 
           <form onSubmit={onSubmit}>
             <input className={styles.button} type="submit" value="Rewrite" />
