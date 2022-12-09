@@ -20,5 +20,6 @@ export default async function (req, res) {
 }
 
 function generatePrompt(input) {
-  return `Describe as if Vladimir Nakobov wrote it: ${input}`;
+  console.log(input);
+  return `${input}`;
 }
