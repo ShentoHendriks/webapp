@@ -20,17 +20,17 @@ export default function Home() {
 
     // Setup The prompt
 
-    input_prompt = `Rewrite as if ${author.current.value} has written it:\n${ref.current.value}`
+    input_prompt = `Rewrite as if ${author.current.value} wrote it:\n${ref.current.value}`
 
     if (detail.current.value == "Rewrite the sentence") {
-      input_prompt = `Rewrite as if ${author.current.value} has written it:\n'\n${ref.current.value}\n'\n`
+      input_prompt = `Rewrite as if ${author.current.value} wrote it:\n'\n${ref.current.value}\n'\n`
     }
 
     if (detail.current.value == "Add more detail") {
-      input_prompt = `Rewrite as if ${author.current.value} has written it. Add more detail:\n'\n${ref.current.value}\n'\n`
+      input_prompt = `Rewrite as if ${author.current.value} wrote it. Add more detail:\n'\n${ref.current.value}\n'\n`
     }
     if (detail.current.value == "Add as many detail as possible") {
-      input_prompt = `Rewrite as if ${author.current.value} has written it. Add as many details as possible. Write as much as you can:\n'\n${ref.current.value}\n'\n`
+      input_prompt = `Rewrite as if ${author.current.value} wrote it. Add as many details as possible. Write as much as you can:\n'\n${ref.current.value}\n'\n`
     }
 
     // Max words
