@@ -19,19 +19,8 @@ export default function Home() {
     event.preventDefault();
 
     // Setup The prompt
-
-    input_prompt = `Rewrite as if ${author.current.value} wrote it. Without saying ${author.current.value}:\n${ref.current.value}`
-
-    if (detail.current.value == "Rewrite the sentence") {
-      input_prompt = `Rewrite as if ${author.current.value} wrote it. Without saying ${author.current.value}:\n'\n${ref.current.value}\n'\n`
-    }
-
-    if (detail.current.value == "Add more detail") {
-      input_prompt = `Rewrite immersively as if ${author.current.value} wrote it. Without saying ${author.current.value}. Add more detail:\n'\n${ref.current.value}\n'\n`
-    }
-    if (detail.current.value == "Add as many detail as possible") {
-      input_prompt = `Rewrite immersively as if ${author.current.value} wrote it. Add as many details as possible. Write as much as you can. Without saying ${author.current.value}:\n'\n${ref.current.value}\n'\n`
-    }
+    input_prompt;
+    get_import_prompt()
 
     // Max words
     function isNumeric(value) {
@@ -40,12 +29,12 @@ export default function Home() {
 
     var number_for_prompt = 250;
     if (isNumeric(maxwords.current.value) == true) {
-      number_for_prompt = parseInt(maxwords.current.value / 0.75)
+      number_for_prompt = parseInt(maxwords.current.value / 0.75) // setup the input for max words in prompt
     }
 
     var randomness_holder = 0.7;
     if (isNumeric(randomness.current.value) == true) {
-      randomness_holder = parseInt(randomness.current.value)
+      randomness_holder = parseInt(randomness.current.value) // setup the randomness in prompt
     }
 
     const response = await fetch("/api/generate", {
@@ -126,4 +115,21 @@ export default function Home() {
       </main>
     </div>
   );
+  
+  // functions here for cleaner code
+  function get_import_prompt() {
+    input_prompt = `Rewrite as if ${author.current.value} wrote it. Without saying ${author.current.value}:\n${ref.current.value}`
+  
+    if (detail.current.value == "Rewrite the sentence") {
+      input_prompt = `Rewrite as if ${author.current.value} wrote it. Without saying ${author.current.value}:\n'\n${ref.current.value}\n'\n`
+    }
+  
+    if (detail.current.value == "Add more detail") {
+      input_prompt = `Rewrite immersively as if ${author.current.value} wrote it. Without saying ${author.current.value}. Add more detail:\n'\n${ref.current.value}\n'\n`
+    }
+    if (detail.current.value == "Add as many detail as possible") {
+      input_prompt = `Rewrite immersively as if ${author.current.value} wrote it. Add as many details as possible. Write as much as you can. Without saying ${author.current.value}:\n'\n${ref.current.value}\n'\n`
+    }
+  }
+
 }
