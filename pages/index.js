@@ -21,7 +21,19 @@ export default function Home() {
     });
     const data = await response.json();
 
-    ref.current.value = data.result;
+    /* Letter generation in forms*/
+    for (let i = 0; i < data.result.length; i++) {
+      task(i);
+    }
+
+    function task(i) {
+      setTimeout(function () {
+        if (i == 0) {
+          ref.current.value = "";
+        }
+        ref.current.value += data.result.charAt(i)
+      }, 15 * i);
+    }
   }
 
   return (
@@ -35,19 +47,19 @@ export default function Home() {
         <div className={styles.wrapper}>
           <h1>Verbosity: Turn your prose into a published author.</h1>
           <h3>Developed and created by: Shento Hendriks</h3>
-          <div for="authors">Choose your Author:</div>
+          <div>Choose your Author:</div>
           <select ref={author}>
             <option value="Vladimir Nabokov">Vladimir Nabokov</option>
             <option value="Ernest Hemingway">Ernest Hemingway</option>
             <option value="F. Scott Fitzgerald">F. Scott Fitzgerald</option>
           </select>
           <form onSubmit={onSubmit}>
-          <input type="submit" value="Rewrite" />
-        </form>
+            <input type="submit" value="Rewrite" />
+          </form>
         </div>
 
 
-        
+
         <textarea className={styles.vak} ref={ref} placeholder="I want to describe..."></textarea>
       </main>
     </div>
