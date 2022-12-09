@@ -10,7 +10,7 @@ export default async function (req, res) {
     model: "text-davinci-003",
     prompt: generatePrompt(req.body.input), // data is received here and sent from index.js -> body: JSON.stringify({ input: input_prompt })
     temperature: 0.7,
-    max_tokens: 556,
+    max_tokens: req.body.maxwordsCount,
     top_p: 1,
     frequency_penalty: 0,
     presence_penalty: 0,
