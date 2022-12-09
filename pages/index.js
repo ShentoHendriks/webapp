@@ -4,8 +4,8 @@ import styles from "./index.module.css";
 import { useRef } from 'react';
 
 
-export default function Home() {
 
+export default function Home() {
   const ref = useRef(null);
   const author = useRef(null);
   const output = useRef(null);
@@ -20,17 +20,17 @@ export default function Home() {
 
     // Setup The prompt
 
-    input_prompt = `Rewrite as if ${author.current.value} wrote it:\n${ref.current.value}`
+    input_prompt = `Rewrite as if ${author.current.value} wrote it. Without saying ${author.current.value}:\n${ref.current.value}`
 
     if (detail.current.value == "Rewrite the sentence") {
-      input_prompt = `Rewrite as if ${author.current.value} wrote it:\n'\n${ref.current.value}\n'\n`
+      input_prompt = `Rewrite as if ${author.current.value} wrote it. Without saying ${author.current.value}:\n'\n${ref.current.value}\n'\n`
     }
 
     if (detail.current.value == "Add more detail") {
-      input_prompt = `Rewrite as if ${author.current.value} wrote it. Add more detail:\n'\n${ref.current.value}\n'\n`
+      input_prompt = `Rewrite immersively as if ${author.current.value} wrote it. Without saying ${author.current.value}. Add more detail:\n'\n${ref.current.value}\n'\n`
     }
     if (detail.current.value == "Add as many detail as possible") {
-      input_prompt = `Rewrite as if ${author.current.value} wrote it. Add as many details as possible. Write as much as you can:\n'\n${ref.current.value}\n'\n`
+      input_prompt = `Rewrite immersively as if ${author.current.value} wrote it. Add as many details as possible. Write as much as you can. Without saying ${author.current.value}:\n'\n${ref.current.value}\n'\n`
     }
 
     // Max words
@@ -38,16 +38,15 @@ export default function Home() {
       return /^-?\d+$/.test(value);
     }
 
-    var number_for_prompt = 250; 
+    var number_for_prompt = 250;
     if (isNumeric(maxwords.current.value) == true) {
-      number_for_prompt = parseInt(maxwords.current.value/0.75)
+      number_for_prompt = parseInt(maxwords.current.value / 0.75)
     }
 
-    var randomness_holder = 0.7; 
+    var randomness_holder = 0.7;
     if (isNumeric(randomness.current.value) == true) {
       randomness_holder = parseInt(randomness.current.value)
     }
-
 
     const response = await fetch("/api/generate", {
       method: "POST",
@@ -61,10 +60,12 @@ export default function Home() {
         randomness: randomness_holder,
       }),
     });
-    const data = await response.json();
+    var data = await response.json();
+    var data2 = data.result.choices[0].text.trim(); //edited output from ai shows results and trimmed
+    var tokencost = data.result.usage.total_tokens; //cost of tokens
 
     /* Letter generation in forms*/
-    for (let i = 0; i < data.result.length; i++) {
+    for (let i = 0; i < data2.length; i++) {
       task(i);
     }
 
@@ -73,8 +74,8 @@ export default function Home() {
         if (i == 0) {
           output.current.value = "";
         }
-        output.current.value += data.result.charAt(i)
-      }, 15 * i);
+        output.current.value += data2.charAt(i)
+      }, 10 * i); // speed of generation
     }
   }
 
@@ -87,8 +88,8 @@ export default function Home() {
 
       <main className={styles.main}>
         <div className={styles.wrapper}>
-          <h1>Verbosity: Rewrite your prose into something beautiful.</h1>
-          <h3>Developed and created by: Shento Hendriks</h3>
+          <h1><span style={{ color: '#7e7ebb' }}>Verbosity:</span> Rewrite your prose into something beautiful.</h1>
+          <h3 style={{ color: '#a3d9a0' }}>Developed and created by: Shento Hendriks</h3>
 
           <div>Choose your Author:</div>
           <select className={styles.bigfont} ref={author}>

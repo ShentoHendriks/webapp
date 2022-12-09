@@ -16,7 +16,8 @@ export default async function (req, res) {
     presence_penalty: 0,
 
   });
-  res.status(200).json({ result: completion.data.choices[0].text.trim() });
+  res.status(200).json({
+    result: completion.data}); //.data.choices[0].text.trim()
 }
 
 function generatePrompt(input) {
