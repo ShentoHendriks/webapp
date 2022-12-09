@@ -66,7 +66,7 @@ export default function Home() {
           output.current.value = "";
         }
         output.current.value += data2.charAt(i)
-      }, 10 * i); // speed of generation
+      }, 2 * i); // speed of generation
     }
   }
 
@@ -130,7 +130,7 @@ export default function Home() {
           output.current.value = "";
         }
         output.current.value += data2.charAt(i)
-      }, 10 * i); // speed of generation
+      }, 2 * i); // speed of generation
     }
   }
 
