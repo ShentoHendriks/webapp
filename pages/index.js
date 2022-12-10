@@ -30,6 +30,7 @@ export default function Home() {
 
     // Setup The prompt
     input_prompt;
+    console.log(get_import_prompt())
     get_import_prompt()
 
     // Max words
@@ -106,66 +107,61 @@ export default function Home() {
       var senses_description = "";
       if (sight.current.checked) {
         if (senses_description == "") {
-          senses_description = "Using sight."
+          senses_description = "Using sight"
         } else {
-          senses_description += " Using sight."
+          senses_description += "Using sight"
         }
       }
       if (smell.current.checked) {
         if (senses_description == "") {
-          senses_description += "Using smell."
+          senses_description += "Using smell"
         } else {
-          senses_description += " Using smell."
+          senses_description += " and using smell"
         }
       }
 
       if (taste.current.checked) {
         if (senses_description == "") {
-          senses_description = "Using taste."
+          senses_description = "Using taste"
         } else {
-          senses_description += " Using taste."
+          senses_description += " and using taste"
         }
       }
 
       if (sound.current.checked) {
         if (senses_description == "") {
-          senses_description = "Using sound."
+          senses_description = "Using sound"
         } else {
-          senses_description += " Using sound."
+          senses_description += " and using sound"
         }
       }
 
       if (touch.current.checked) {
         if (senses_description == "") {
-          senses_description = "Using touch."
+          senses_description = "Using touch"
         } else {
-          senses_description += " Using touch."
+          senses_description += " and using touch"
         }
       }
 
       if (metaphor.current.checked) {
         if (senses_description == "") {
-          senses_description = "Using a metaphor."
+          senses_description = "Using a metaphor"
         } else {
-          senses_description += " Using a metaphor."
+          senses_description += " and using a metaphor"
         }
-      }
-      if (senses_description.charAt(senses_description.length - 1) == '.') {
-        senses_description = senses_description.slice(0, -1)
       }
       return senses_description
     }
-
     if (detail.current.value == "Rewrite the sentence") {
-      input_prompt = `Describe as if ${author.current.value} wrote it. Without saying ${author.current.value}. ${get_senses_description()}${". " + removedot(additionalInformation.current.value)}:\n'\n${ref.current.value}\n'\n`
-      console.log(input_prompt);
+      input_prompt = `Describe ${get_senses_description()} as if ${author.current.value} wrote it. Without saying ${author.current.value}:\n'\n${ref.current.value}\n'\n`
     }
 
     if (detail.current.value == "Add more detail") {
-      input_prompt = `Describe immersively as if ${author.current.value} wrote it. Without saying ${author.current.value}. Add more detail. ${get_senses_description()}${". " + removedot(additionalInformation.current.value)}:\n'\n${ref.current.value}\n'\n`
+      input_prompt = `Describe with great detail ${get_senses_description()} as if ${author.current.value} wrote it. Without saying ${author.current.value}:\n'\n${ref.current.value}\n'\n`
     }
     if (detail.current.value == "Add as many detail as possible") {
-      input_prompt = `Describe immersively as if ${author.current.value} wrote it. Add as many details as possible. Write as much as you can. Without saying ${author.current.value}. ${get_senses_description()}${". " + removedot(additionalInformation.current.value)}:\n'\n${ref.current.value}\n'\n`
+      input_prompt = `Describe with as many details as possible and dialogue ${get_senses_description()} as if ${author.current.value} wrote it. Without saying ${author.current.value}:\n'\n${ref.current.value}\n'\n`
     }
 
     const response = await fetch("/api/generate", {
@@ -198,8 +194,6 @@ export default function Home() {
       }, 2 * i); // speed of generation
     }
   }
-
-
 
   return (
     <div>
@@ -240,8 +234,8 @@ export default function Home() {
           <div className={styles.margintop}>Randomness (0-1) Default = 0.7:</div>
           <input type="text" className={styles.bigfont} ref={randomness}></input>
 
-          <div className={styles.margintop}>Additional Information:</div>
-          <textarea className={styles.vakextrainfo} ref={additionalInformation} placeholder="For example, the father is gay or add the crowds shocked reaction. Describe the stares of the girl he walked past."></textarea>
+          {/* <div className={styles.margintop}>Additional Information:</div>
+          <textarea className={styles.vakextrainfo} ref={additionalInformation} placeholder="For example, the father is gay or add the crowds shocked reaction. Describe the stares of the girl he walked past."></textarea> */}
 
           <form onSubmit={onSubmit}>
             <input className={styles.button} type="submit" value="Rewrite" />
@@ -274,23 +268,23 @@ export default function Home() {
   function removedot(input) {
     if (input.charAt(input.length - 1) == '.') {
       input = input.slice(0, -1);
-    }
-    return input;
+      return input;
+    } else {return input;}
+    
   }
 
   // functions here for cleaner code
   function get_import_prompt() {
-    input_prompt = `Rewrite as if ${author.current.value} wrote it. Without saying ${author.current.value}${". " + removedot(additionalInformation.current.value)}:\n${ref.current.value}`
-
+    input_prompt;
     if (detail.current.value == "Rewrite the sentence") {
-      input_prompt = `Rewrite as if ${author.current.value} wrote it. Without saying ${author.current.value}${". " + removedot(additionalInformation.current.value)}:\n'\n${ref.current.value}\n'\n`
+      input_prompt = `Rewrite as if ${author.current.value} wrote it. Without saying ${author.current.value}:\n'\n${ref.current.value}\n'\n`
     }
 
     if (detail.current.value == "Add more detail") {
-      input_prompt = `Rewrite immersively as if ${author.current.value} wrote it. Without saying ${author.current.value}. Add more detail${". " + removedot(additionalInformation.current.value)}:\n'\n${ref.current.value}\n'\n`
+      input_prompt = `Rewrite with great detail as if ${author.current.value} wrote it. Without saying ${author.current.value}:\n'\n${ref.current.value}\n'\n`
     }
     if (detail.current.value == "Add as many detail as possible") {
-      input_prompt = `Rewrite immersively as if ${author.current.value} wrote it. Add as many details as possible. Write as much as you can. Without saying ${author.current.value}${". " + removedot(additionalInformation.current.value)}:\n'\n${ref.current.value}\n'\n`
+      input_prompt = `Rewrite with as many details as possible and dialogue as if ${author.current.value} wrote it. Without saying ${author.current.value}:\n'\n${ref.current.value}\n'\n`
     }
   }
 
