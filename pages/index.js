@@ -12,7 +12,15 @@ export default function Home() {
   const detail = useRef(null);
   const maxwords = useRef(null);
   const randomness = useRef(null);
-  const senses = useRef(null);
+  const additionalInformation = useRef(null);
+
+  //Senses
+  const sight = useRef(null);
+  const smell = useRef(null);
+  const taste = useRef(null);
+  const sound = useRef(null);
+  const touch = useRef(null);
+  const metaphor = useRef(null);
 
   var input_prompt = "";
 
@@ -74,6 +82,8 @@ export default function Home() {
   async function onSubmitDescribe(event) {
     event.preventDefault();
     input_prompt = "";
+
+    console.log(get_senses_description());
     // Max words
     function isNumeric(value) {
       return /^-?\d+$/.test(value);
@@ -90,17 +100,72 @@ export default function Home() {
     }
 
     // Prompt here for describe
-    input_prompt = `Describe as if ${author.current.value} wrote it. Without saying ${author.current.value}. Using ${senses.current.value}:\n${ref.current.value}`
+    input_prompt;
+
+    function get_senses_description() {
+      var senses_description = "";
+      if (sight.current.checked) {
+        if (senses_description == "") {
+          senses_description = "Using sight."
+        } else {
+          senses_description += " Using sight."
+        }
+      }
+      if (smell.current.checked) {
+        if (senses_description == "") {
+          senses_description += "Using smell."
+        } else {
+          senses_description += " Using smell."
+        }
+      }
+
+      if (taste.current.checked) {
+        if (senses_description == "") {
+          senses_description = "Using taste."
+        } else {
+          senses_description += " Using taste."
+        }
+      }
+
+      if (sound.current.checked) {
+        if (senses_description == "") {
+          senses_description = "Using sound."
+        } else {
+          senses_description += " Using sound."
+        }
+      }
+
+      if (touch.current.checked) {
+        if (senses_description == "") {
+          senses_description = "Using touch."
+        } else {
+          senses_description += " Using touch."
+        }
+      }
+
+      if (metaphor.current.checked) {
+        if (senses_description == "") {
+          senses_description = "Using a metaphor."
+        } else {
+          senses_description += " Using a metaphor."
+        }
+      }
+      if (senses_description.charAt(senses_description.length - 1) == '.') {
+        senses_description = senses_description.slice(0, -1)
+      }
+      return senses_description
+    }
 
     if (detail.current.value == "Rewrite the sentence") {
-      input_prompt = `Describe as if ${author.current.value} wrote it. Without saying ${author.current.value}. Using ${senses.current.value}:\n'\n${ref.current.value}\n'\n`
+      input_prompt = `Describe as if ${author.current.value} wrote it. Without saying ${author.current.value}. ${get_senses_description()}${". " + additionalInformation.current.value}:\n'\n${ref.current.value}\n'\n`
+      console.log(input_prompt);
     }
 
     if (detail.current.value == "Add more detail") {
-      input_prompt = `Describe immersively as if ${author.current.value} wrote it. Without saying ${author.current.value}. Add more detail. sing ${senses.current.value}:\n'\n${ref.current.value}\n'\n`
+      input_prompt = `Describe immersively as if ${author.current.value} wrote it. Without saying ${author.current.value}. Add more detail. ${get_senses_description()}${". " + additionalInformation.current.value}:\n'\n${ref.current.value}\n'\n`
     }
     if (detail.current.value == "Add as many detail as possible") {
-      input_prompt = `Describe immersively as if ${author.current.value} wrote it. Add as many details as possible. Write as much as you can. Without saying ${author.current.value}. Using ${senses.current.value}:\n'\n${ref.current.value}\n'\n`
+      input_prompt = `Describe immersively as if ${author.current.value} wrote it. Add as many details as possible. Write as much as you can. Without saying ${author.current.value}. ${get_senses_description()}${". " + additionalInformation.current.value}:\n'\n${ref.current.value}\n'\n`
     }
 
     const response = await fetch("/api/generate", {
@@ -133,6 +198,7 @@ export default function Home() {
       }, 2 * i); // speed of generation
     }
   }
+
 
 
   return (
@@ -174,22 +240,28 @@ export default function Home() {
           <div className={styles.margintop}>Randomness (0-1) Default = 0.7:</div>
           <input type="text" className={styles.bigfont} ref={randomness}></input>
 
+          <div className={styles.margintop}>Additional Information:</div>
+          <textarea className={styles.vakextrainfo} ref={additionalInformation} placeholder="For example, the father is gay or add the crowds shocked reaction. Describe the stares of the girl he walked past."></textarea>
+
           <form onSubmit={onSubmit}>
             <input className={styles.button} type="submit" value="Rewrite" />
           </form>
 
           <form onSubmit={onSubmitDescribe}>
             <input className={styles.button} type="submit" value="Describe" />
-            <select className={styles.bigfont} ref={senses}>
-            <option value="sight">Sight</option>
-            <option value="smell">Smell</option>
-            <option value="taste">Taste</option>
-            <option value="sound">Sound</option>
-            <option value="touch">Touch</option>
-            <option value="metaphor">Metaphor</option>
-          </select>
+            <input ref={sight} type="checkbox" value=""></input>
+            <label>Sight</label>
+            <input ref={smell} type="checkbox" value="smell" ></input>
+            <label>Smell</label>
+            <input ref={taste} type="checkbox" value="taste"></input>
+            <label>Taste</label>
+            <input ref={sound} type="checkbox" value="sound"></input>
+            <label>Sound</label>
+            <input ref={touch} type="checkbox" value="touch"></input>
+            <label>Touch</label>
+            <input ref={metaphor} type="checkbox" value="metaphor"></input>
+            <label>Metaphor</label>
           </form>
-
           <textarea className={styles.vakinput} ref={ref} placeholder="I want to describe..."></textarea>
           <textarea className={styles.vakouput} placeholder="Rewritten Text..." ref={output}></textarea>
         </div>
@@ -201,17 +273,17 @@ export default function Home() {
 
   // functions here for cleaner code
   function get_import_prompt() {
-    input_prompt = `Rewrite as if ${author.current.value} wrote it. Without saying ${author.current.value}:\n${ref.current.value}`
+    input_prompt = `Rewrite as if ${author.current.value} wrote it. Without saying ${author.current.value}${". " + additionalInformation.current.value}:\n${ref.current.value}`
 
     if (detail.current.value == "Rewrite the sentence") {
-      input_prompt = `Rewrite as if ${author.current.value} wrote it. Without saying ${author.current.value}:\n'\n${ref.current.value}\n'\n`
+      input_prompt = `Rewrite as if ${author.current.value} wrote it. Without saying ${author.current.value}${". " + additionalInformation.current.value}:\n'\n${ref.current.value}\n'\n`
     }
 
     if (detail.current.value == "Add more detail") {
-      input_prompt = `Rewrite immersively as if ${author.current.value} wrote it. Without saying ${author.current.value}. Add more detail:\n'\n${ref.current.value}\n'\n`
+      input_prompt = `Rewrite immersively as if ${author.current.value} wrote it. Without saying ${author.current.value}. Add more detail${". " + additionalInformation.current.value}:\n'\n${ref.current.value}\n'\n`
     }
     if (detail.current.value == "Add as many detail as possible") {
-      input_prompt = `Rewrite immersively as if ${author.current.value} wrote it. Add as many details as possible. Write as much as you can. Without saying ${author.current.value}:\n'\n${ref.current.value}\n'\n`
+      input_prompt = `Rewrite immersively as if ${author.current.value} wrote it. Add as many details as possible. Write as much as you can. Without saying ${author.current.value}${". " + additionalInformation.current.value}:\n'\n${ref.current.value}\n'\n`
     }
   }
 
