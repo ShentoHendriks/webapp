@@ -157,15 +157,15 @@ export default function Home() {
     }
 
     if (detail.current.value == "Rewrite the sentence") {
-      input_prompt = `Describe as if ${author.current.value} wrote it. Without saying ${author.current.value}. ${get_senses_description()}${". " + additionalInformation.current.value}:\n'\n${ref.current.value}\n'\n`
+      input_prompt = `Describe as if ${author.current.value} wrote it. Without saying ${author.current.value}. ${get_senses_description()}${". " + removedot(additionalInformation.current.value)}:\n'\n${ref.current.value}\n'\n`
       console.log(input_prompt);
     }
 
     if (detail.current.value == "Add more detail") {
-      input_prompt = `Describe immersively as if ${author.current.value} wrote it. Without saying ${author.current.value}. Add more detail. ${get_senses_description()}${". " + additionalInformation.current.value}:\n'\n${ref.current.value}\n'\n`
+      input_prompt = `Describe immersively as if ${author.current.value} wrote it. Without saying ${author.current.value}. Add more detail. ${get_senses_description()}${". " + removedot(additionalInformation.current.value)}:\n'\n${ref.current.value}\n'\n`
     }
     if (detail.current.value == "Add as many detail as possible") {
-      input_prompt = `Describe immersively as if ${author.current.value} wrote it. Add as many details as possible. Write as much as you can. Without saying ${author.current.value}. ${get_senses_description()}${". " + additionalInformation.current.value}:\n'\n${ref.current.value}\n'\n`
+      input_prompt = `Describe immersively as if ${author.current.value} wrote it. Add as many details as possible. Write as much as you can. Without saying ${author.current.value}. ${get_senses_description()}${". " + removedot(additionalInformation.current.value)}:\n'\n${ref.current.value}\n'\n`
     }
 
     const response = await fetch("/api/generate", {
@@ -271,19 +271,26 @@ export default function Home() {
     </div>
   );
 
+  function removedot(input) {
+    if (input.charAt(input.length - 1) == '.') {
+      input = input.slice(0, -1);
+    }
+    return input;
+  }
+
   // functions here for cleaner code
   function get_import_prompt() {
-    input_prompt = `Rewrite as if ${author.current.value} wrote it. Without saying ${author.current.value}${". " + additionalInformation.current.value}:\n${ref.current.value}`
+    input_prompt = `Rewrite as if ${author.current.value} wrote it. Without saying ${author.current.value}${". " + removedot(additionalInformation.current.value)}:\n${ref.current.value}`
 
     if (detail.current.value == "Rewrite the sentence") {
-      input_prompt = `Rewrite as if ${author.current.value} wrote it. Without saying ${author.current.value}${". " + additionalInformation.current.value}:\n'\n${ref.current.value}\n'\n`
+      input_prompt = `Rewrite as if ${author.current.value} wrote it. Without saying ${author.current.value}${". " + removedot(additionalInformation.current.value)}:\n'\n${ref.current.value}\n'\n`
     }
 
     if (detail.current.value == "Add more detail") {
-      input_prompt = `Rewrite immersively as if ${author.current.value} wrote it. Without saying ${author.current.value}. Add more detail${". " + additionalInformation.current.value}:\n'\n${ref.current.value}\n'\n`
+      input_prompt = `Rewrite immersively as if ${author.current.value} wrote it. Without saying ${author.current.value}. Add more detail${". " + removedot(additionalInformation.current.value)}:\n'\n${ref.current.value}\n'\n`
     }
     if (detail.current.value == "Add as many detail as possible") {
-      input_prompt = `Rewrite immersively as if ${author.current.value} wrote it. Add as many details as possible. Write as much as you can. Without saying ${author.current.value}${". " + additionalInformation.current.value}:\n'\n${ref.current.value}\n'\n`
+      input_prompt = `Rewrite immersively as if ${author.current.value} wrote it. Add as many details as possible. Write as much as you can. Without saying ${author.current.value}${". " + removedot(additionalInformation.current.value)}:\n'\n${ref.current.value}\n'\n`
     }
   }
 
